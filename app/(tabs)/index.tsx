@@ -1,13 +1,14 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
+import ActiveWallpaper from '@/components/home/active-wallpaper';
 import CategoriesImage from '@/components/home/categories';
-import { HeroSection } from '@/components/home/hero-section';
 
 export default function HomeScreen() {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
     <View style={styles.container}>
-      <HeroSection />
+      {/* <HeroSection /> */}
+      <ActiveWallpaper />
       <View style={styles.categoriesContainer}>
         <View style={styles.categoriesHeader}>
           <Text style={styles.categoriesTitle}>Categories</Text>
