@@ -1,6 +1,8 @@
+import ListView from '@/components/browse/list-view'
 import CategoriesImage from '@/components/home/categories'
 import { HeroSection } from '@/components/home/hero-section'
 import { Image } from 'expo-image'
+import { router } from 'expo-router'
 import React, { useState } from 'react'
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
 
@@ -41,7 +43,10 @@ const Browse = () => {
             </View>
           </View>
           <View style={styles.categoriesContainer}>
-            <CategoriesImage />
+            {listView === 'grid' 
+              ? <CategoriesImage onImagePress={(id) => router.push({ pathname: '/(tabs)/category/[id]', params: { id: id.toString() } })} /> 
+              : <ListView onImagePress={(id) => router.push({ pathname: '/(tabs)/category/[id]', params: { id: id.toString() } })} />
+            }
           </View>
         </View>
       </ScrollView>

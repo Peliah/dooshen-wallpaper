@@ -2,10 +2,13 @@ import { images } from '@/lib/data'
 import { BlurView } from 'expo-blur'
 import { Image } from 'expo-image'
 import React from 'react'
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native'
 
+type CategoriesImageProps = {
+  onImagePress?: (imageId: number) => void;
+};
 
-const CategoriesImage = () => {
+const CategoriesImage = ({ onImagePress }: CategoriesImageProps) => {
     const { width: screenWidth } = useWindowDimensions()
     const padding = 16
     const gap = 12
@@ -14,8 +17,9 @@ const CategoriesImage = () => {
     return (
         <View style={styles.gridContainer}>
             {images.map((image, index) => (
-                <View
+                <TouchableOpacity
                     key={image.id}
+                    onPress={() => onImagePress?.(image.id)}
                     style={[
                         styles.imageContainer,
                         {
@@ -32,7 +36,7 @@ const CategoriesImage = () => {
                             <Text style={styles.numberOfWallpapers}>{image.numberOfWallpapers} Wallpapers</Text>
                         </BlurView>
                     </View>
-                </View>
+                </TouchableOpacity>
             ))}
         </View>
     )
