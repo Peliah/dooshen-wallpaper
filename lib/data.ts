@@ -5,6 +5,51 @@ export const images = [
         name: 'Nature',
         description: 'Mountains, Forest and Landscapes',
         numberOfWallpapers: 3,
+        wallpapers: [
+            {
+                id: 1,
+                image: require('@/assets/imgs/nature/nature1.jpg'),
+                name: 'Nature 1',
+                description: 'Discover the pure beauty of "Natural Essence" – your gateway to authentic, nature-inspired experiences. Let this unique collection elevate your senses and connect you with the unrefined elegance of the natural world. Embrace "Natural Essence" for a truly organic transformation in your daily life.',
+                tags: ['nature', 'landscape', 'mountains', 'forest'],
+            },
+            {
+                id: 2,
+                image: require('@/assets/imgs/nature/nature2.jpg'),
+                name: 'Nature 2',
+                description: 'Discover the pure beauty of "Natural Essence" – your gateway to authentic, nature-inspired experiences. Let this unique collection elevate your senses and connect you with the unrefined elegance of the natural world. Embrace "Natural Essence" for a truly organic transformation in your daily life.',
+                tags: ['nature', 'landscape', 'mountains', 'forest'],
+            },
+            {
+                id: 3,
+                image: require('@/assets/imgs/nature/nature3.jpg'),
+                name: 'Nature 3',
+                description: 'Discover the pure beauty of "Natural Essence" – your gateway to authentic, nature-inspired experiences. Let this unique collection elevate your senses and connect you with the unrefined elegance of the natural world. Embrace "Natural Essence" for a truly organic transformation in your daily life.',
+                tags: ['nature', 'landscape', 'mountains', 'forest'],
+            },
+            {
+                id: 4,
+                image: require('@/assets/imgs/nature/nature4.jpg'),
+                name: 'Nature 4',
+                description: 'Discover the pure beauty of "Natural Essence" – your gateway to authentic, nature-inspired experiences. Let this unique collection elevate your senses and connect you with the unrefined elegance of the natural world. Embrace "Natural Essence" for a truly organic transformation in your daily life.',
+                tags: ['nature', 'landscape', 'mountains', 'forest'],
+            },
+            {
+                id: 5,
+                image: require('@/assets/imgs/nature/nature5.jpg'),
+                name: 'Nature 5',
+                description: 'Discover the pure beauty of "Natural Essence" – your gateway to authentic, nature-inspired experiences. Let this unique collection elevate your senses and connect you with the unrefined elegance of the natural world. Embrace "Natural Essence" for a truly organic transformation in your daily life.',
+                tags: ['nature', 'landscape', 'mountains', 'forest'],
+            },
+            {
+                id: 6,
+                image: require('@/assets/imgs/nature/nature6.jpg'),
+                name: 'Nature 6',
+                description: 'Discover the pure beauty of "Natural Essence" – your gateway to authentic, nature-inspired experiences. Let this unique collection elevate your senses and connect you with the unrefined elegance of the natural world. Embrace "Natural Essence" for a truly organic transformation in your daily life.',
+                tags: ['nature', 'landscape', 'mountains', 'forest'],
+            },
+            
+        ],
     },
     {
         id: 2,

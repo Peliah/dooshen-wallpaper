@@ -1,9 +1,10 @@
 import { ViewToggle } from '@/components/browse/view-toggle';
+import CategoryImages from '@/components/category/category-images';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { images } from '@/lib/data';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 type ViewMode = 'grid' | 'rows' | null;
 
@@ -22,20 +23,24 @@ export default function CategoryScreen() {
   }
 
   return (
-    <View style={styles.container}>
-      {/* Leftt Side */}
-      <View>
-        <TouchableOpacity onPress={() => router.back()}><IconSymbol name="chevron.left" size={24} color="#000" /> Back to Categories</TouchableOpacity>
-        <View>
-          <Text>{category.name}</Text>
-          <ViewToggle currentView={listView} onViewChange={setListView} />
+    // <View style={styles.container}>
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+        {/* Leftt Side */}
+        <View style={styles.leftSide}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.backButton}><IconSymbol name="chevron.left" size={24} color="#000" /> Back to Categories</TouchableOpacity>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>{category.name}</Text>
+            <ViewToggle currentView={listView} onViewChange={setListView} />
+          </View>
+          <CategoryImages categoryId={categoryId} />
+        </View>
+
+        {/* Right Side */}
+        <View style={styles.rightSide}>
 
         </View>
-      </View>
-
-      {/* Right Side */}
-      <View></View>
-    </View>
+      </ScrollView>
+    // </View>
   );
 }
 
@@ -44,11 +49,26 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: '#F8F8F8',
+    flexDirection: 'row',
+  },
+  leftSide: {
+    flex: 1,
+  },
+  rightSide: {
+    flex: 1,
+  },
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    fontFamily: 'Poppins-Regular',
+    color: '#808080',
+
   },
   title: {
     fontSize: 32,
-    fontWeight: 'bold',
-    fontFamily: 'Poppins-Regular',
+    fontWeight: '100',
+    fontFamily: 'ClashDisplay-Medium',
     color: '#000',
     marginBottom: 8,
   },
@@ -64,6 +84,12 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontFamily: 'Poppins-Light',
     color: '#808080',
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 16,
   },
 });
 
