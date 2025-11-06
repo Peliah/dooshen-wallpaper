@@ -16,7 +16,10 @@ export default function HomeScreen() {
             activeWallpaper ? (
               <ActiveWallpaper />
             ) : (
-              <HeroSection />
+              <HeroSection 
+                title="Discover Beautiful Wallpapers"
+                description="Discover curated collections of stunning wallpapers. Browse by category, preview in full-screen, and set your favorites."
+              />
             )
           }
           <View style={styles.categoriesContainer}>
