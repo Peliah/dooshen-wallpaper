@@ -1,40 +1,62 @@
+import { IconSymbol } from '@/components/ui/icon-symbol';
 import { images } from '@/lib/data';
 import { BlurView } from 'expo-blur';
-import React from 'react';
-import { Image, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import React, { useState } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const CategoryImages = ({ categoryId }: { categoryId: number }) => {
     const category = images.find(img => img.id === categoryId);
     const wallpapers = category?.wallpapers || [];
-    const { width: screenWidth } = useWindowDimensions();
-    const containerPadding = 16;
-    const gap = 12;
-    const itemWidth = (screenWidth - (containerPadding * 2) - (gap * 2)) / 3;
+    const [favorites, setFavorites] = useState<Record<number, boolean>>({});
+
+    const toggleFavorite = (wallpaperId: number) => {
+        setFavorites(prev => ({
+            ...prev,
+            [wallpaperId]: !prev[wallpaperId]
+        }));
+    };
 
     return (
         <View style={styles.container}>
             {
-                wallpapers.map((wallpaper, index) => (
-                    <View 
-                        key={wallpaper.id} 
-                        style={[
-                            styles.imageContainer,
-                            // {
-                            //     width: itemWidth,
-                            //     marginRight: (index + 1) % 3 !== 0 ? gap : 0,
-                            //     marginBottom: gap,
-                            // }
-                        ]}
-                    >
-                        <Image source={wallpaper.image} style={[styles.image]} />
-                        <View style={styles.imageInfo}>
-                            <Text style={styles.name}>{wallpaper.name}</Text>
-                            <BlurView intensity={20} style={styles.numberOfWallpapersContainer}>
-                                <Text style={styles.description}>{wallpaper.name}</Text>
-                            </BlurView>
+                wallpapers.map((wallpaper, index) => {
+                    const isFavorited = favorites[wallpaper.id] || false;
+                    return (
+                        <View
+                            key={wallpaper.id}
+                            style={[
+                                styles.imageContainer,
+                                // {
+                                //     width: itemWidth,
+                                //     marginRight: (index + 1) % 3 !== 0 ? gap : 0,
+                                //     marginBottom: gap,
+                                // }
+                            ]}
+                        >
+                            <Image source={wallpaper.image} style={[styles.image]} />
+                            <View style={styles.imageInfo}>
+                                <Text style={styles.name}>{wallpaper.name}</Text>
+                                <BlurView intensity={20} style={styles.numberOfWallpapersContainer}>
+                                    <Text style={styles.description}>{wallpaper.name}</Text>
+                                </BlurView>
+                            </View>
+                            <TouchableOpacity
+                                style={styles.imageActionButton}
+                                onPress={() => toggleFavorite(wallpaper.id)}
+                            >
+                                {!isFavorited ? (
+                                    <BlurView intensity={20} style={styles.imageActionButtonBlur}>
+                                        <IconSymbol name="heart" size={24} color="#fff" />
+                                    </BlurView>
+                                ) : (
+                                    <View style={styles.imageActionButtonBlur}>
+                                        <IconSymbol name="heart.fill" size={24} color="#FFA821" />
+                                    </View>
+                                )}
+                            </TouchableOpacity>
                         </View>
-                    </View>
-                ))
+                    );
+                })
             }
         </View>
     )
@@ -46,13 +68,12 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        padding: 16,
+        gap: 16,
         borderRadius: 30,
     },
     imageContainer: {
         borderRadius: 20,
         position: 'relative',
-        marginBottom: 16,
     },
     image: {
         borderRadius: 20,
@@ -88,5 +109,18 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'rgba(255, 255, 255, 0.3)',
         overflow: 'hidden',
+    },
+    imageActionButton: {
+        position: 'absolute',
+        top: 12,
+        right: 12,
+    },
+    imageActionButtonBlur: {
+        padding: 8,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: 'rgba(255, 255, 255, 0.3)',
+        overflow: 'hidden',
+        backgroundColor: '#fff',
     },
 })

@@ -20,6 +20,8 @@ const MAPPING = {
   'chevron.right': 'chevron-right',
   'chevron.left': 'chevron-left',
   'eye': 'visibility',
+  'heart': 'favorite-border',
+  'heart.fill': 'favorite',
 } as IconMapping;
 
 /**

@@ -23,7 +23,6 @@ export default function CategoryScreen() {
   }
 
   return (
-    // <View style={styles.container}>
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
         {/* Leftt Side */}
         <View style={styles.leftSide}>
@@ -40,7 +39,6 @@ export default function CategoryScreen() {
 
         </View>
       </ScrollView>
-    // </View>
   );
 }
 
@@ -53,9 +51,11 @@ const styles = StyleSheet.create({
   },
   leftSide: {
     flex: 1,
+    width: '50%',
   },
   rightSide: {
     flex: 1,
+    width: '50%',
   },
   backButton: {
     flexDirection: 'row',
