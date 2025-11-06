@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     backgroundColor: '#fff',
     minHeight: 60,
+    height: 98,
   },
   leftSection: {
     flexDirection: 'row',
