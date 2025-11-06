@@ -1,5 +1,6 @@
 import { ViewToggle } from '@/components/browse/view-toggle';
 import CategoryImages from '@/components/category/category-images';
+import PreviewSection from '@/components/category/preview-section';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { images } from '@/lib/data';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -13,6 +14,13 @@ export default function CategoryScreen() {
   const categoryId = parseInt(id || '1', 10);
   const category = images.find(img => img.id === categoryId);
   const [listView, setListView] = useState<ViewMode>('grid');
+  const [selectedWallpaper, setSelectedWallpaper] = useState<{
+    id: number;
+    image: any;
+    name: string;
+    description: string;
+    tags: string[];
+  } | null>(category?.wallpapers?.[0] || null);
 
   if (!category) {
     return (
@@ -22,40 +30,55 @@ export default function CategoryScreen() {
     );
   }
 
+  const handleImagePress = (wallpaperId: number) => {
+    const wallpaper = category.wallpapers?.find(w => w.id === wallpaperId);
+    if (wallpaper) {
+      setSelectedWallpaper(wallpaper);
+    }
+  };
+
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-        {/* Leftt Side */}
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
+      <View style={styles.container}>
+        {/* Left Side */}
         <View style={styles.leftSide}>
           <TouchableOpacity onPress={() => router.back()} style={styles.backButton}><IconSymbol name="chevron.left" size={24} color="#000" /> Back to Categories</TouchableOpacity>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>{category.name}</Text>
             <ViewToggle currentView={listView} onViewChange={setListView} />
           </View>
-          <CategoryImages categoryId={categoryId} />
+          <CategoryImages categoryId={categoryId} onImagePress={handleImagePress} />
         </View>
 
         {/* Right Side */}
         <View style={styles.rightSide}>
-
+          <PreviewSection wallpaper={selectedWallpaper} />
         </View>
-      </ScrollView>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  scrollView: {
     flex: 1,
-    padding: 16,
     backgroundColor: '#F8F8F8',
+  },
+  scrollContent: {
+    padding: 16,
+  },
+  container: {
     flexDirection: 'row',
+    gap: 16,
+    justifyContent: 'space-between',
   },
   leftSide: {
-    flex: 1,
-    width: '50%',
+    // flex: 1,
+    width: '42.5%',
   },
   rightSide: {
-    flex: 1,
-    width: '50%',
+    // flex: 1,
+    width: '50.5%',
   },
   backButton: {
     flexDirection: 'row',

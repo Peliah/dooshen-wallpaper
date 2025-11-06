@@ -4,7 +4,12 @@ import { BlurView } from 'expo-blur';
 import React, { useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const CategoryImages = ({ categoryId }: { categoryId: number }) => {
+type CategoryImagesProps = {
+    categoryId: number;
+    onImagePress?: (wallpaperId: number) => void;
+};
+
+const CategoryImages = ({ categoryId, onImagePress }: CategoryImagesProps) => {
     const category = images.find(img => img.id === categoryId);
     const wallpapers = category?.wallpapers || [];
     const [favorites, setFavorites] = useState<Record<number, boolean>>({});
@@ -22,8 +27,9 @@ const CategoryImages = ({ categoryId }: { categoryId: number }) => {
                 wallpapers.map((wallpaper, index) => {
                     const isFavorited = favorites[wallpaper.id] || false;
                     return (
-                        <View
+                        <TouchableOpacity
                             key={wallpaper.id}
+                            onPress={() => onImagePress?.(wallpaper.id)}
                             style={[
                                 styles.imageContainer,
                                 // {
@@ -43,6 +49,7 @@ const CategoryImages = ({ categoryId }: { categoryId: number }) => {
                             <TouchableOpacity
                                 style={styles.imageActionButton}
                                 onPress={() => toggleFavorite(wallpaper.id)}
+                                activeOpacity={1}
                             >
                                 {!isFavorited ? (
                                     <BlurView intensity={20} style={styles.imageActionButtonBlur}>
@@ -54,7 +61,7 @@ const CategoryImages = ({ categoryId }: { categoryId: number }) => {
                                     </View>
                                 )}
                             </TouchableOpacity>
-                        </View>
+                        </TouchableOpacity>
                     );
                 })
             }
@@ -77,8 +84,8 @@ const styles = StyleSheet.create({
     },
     image: {
         borderRadius: 20,
-        width: 190,
-        height: 290,
+        width: 200,
+        height: 300,
     },
     imageInfo: {
         position: 'absolute',
