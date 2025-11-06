@@ -1,8 +1,9 @@
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { IconSymbol } from '../ui/icon-symbol';
+import { SetWallpaperSheet } from './set-wallpaper-sheet';
 
 type PreviewSectionProps = {
     wallpaper: {
@@ -15,6 +16,16 @@ type PreviewSectionProps = {
 };
 
 const Preview = ({ wallpaper }: PreviewSectionProps) => {
+    const [isSheetVisible, setIsSheetVisible] = useState(false);
+
+    const openSheet = () => {
+        setIsSheetVisible(true);
+    };
+
+    const closeSheet = () => {
+        setIsSheetVisible(false);
+    };
+
     if (!wallpaper) {
         return (
             <LinearGradient
@@ -90,10 +101,16 @@ const Preview = ({ wallpaper }: PreviewSectionProps) => {
                     <IconSymbol name="heart" size={24} color="#000" />
                     <Text style={styles.bottomActionText}>Save to Favorites</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.bottomActionButton, styles.setWallpaperButton]}>
+                <TouchableOpacity 
+                    style={[styles.bottomActionButton, styles.setWallpaperButton]}
+                    onPress={openSheet}
+                >
                     <Text style={styles.setWallpaperText}>Set to Wallpaper</Text>
                 </TouchableOpacity>
             </View>
+
+            {/* Right Side Sheet */}
+            <SetWallpaperSheet visible={isSheetVisible} onClose={closeSheet} />
         </LinearGradient>
     )
 }
@@ -109,6 +126,7 @@ const styles = StyleSheet.create({
     contentRow: {
         flexDirection: 'row',
         gap: 16,
+        justifyContent: 'space-between',
     },
     leftSide: {
         flex: 1,
