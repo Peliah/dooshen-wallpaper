@@ -24,6 +24,7 @@ const MAPPING = {
   'heart.fill': 'favorite',
   'circle': 'radio-button-unchecked',
   'checkmark.circle.fill': 'check-circle',
+  'link': 'link',
 } as IconMapping;
 
 /**
