@@ -2,26 +2,50 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-nati
 
 import ActiveWallpaper from '@/components/home/active-wallpaper';
 import CategoriesImage from '@/components/home/categories';
+import { HeroSection } from '@/components/home/hero-section';
+import { IconSymbol } from '@/components/ui/icon-symbol';
+import { useState } from 'react';
 
 export default function HomeScreen() {
+  const [activeWallpaper, setActiveWallpaper] = useState<any>(null);
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-    <View style={styles.container}>
-      {/* <HeroSection /> */}
-      <ActiveWallpaper />
-      <View style={styles.categoriesContainer}>
-        <View style={styles.categoriesHeader}>
-          <Text style={styles.categoriesTitle}>Categories</Text>
-          <TouchableOpacity> <Text style={styles.categoriesButton}> See All</Text></TouchableOpacity>
+    <View style={styles.screenContainer}>
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
+        <View style={styles.container}>
+          {
+            activeWallpaper ? (
+              <ActiveWallpaper />
+            ) : (
+              <HeroSection />
+            )
+          }
+          <View style={styles.categoriesContainer}>
+            <View style={styles.categoriesHeader}>
+              <Text style={styles.categoriesTitle}>Categories</Text>
+              <TouchableOpacity> <Text style={styles.categoriesButton}> See All</Text></TouchableOpacity>
+            </View>
+            <CategoriesImage />
+          </View>
         </View>
-          <CategoriesImage />
-      </View>
+      </ScrollView>
+      <TouchableOpacity 
+        onPress={() => setActiveWallpaper(activeWallpaper ? null : {})} 
+        style={styles.viewActiveWallpaperButton}
+      >
+        <IconSymbol name="eye" size={24} color="black" />
+      </TouchableOpacity>
     </View>
-    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  screenContainer: {
+    flex: 1,
+    position: 'relative',
+  },
+  scrollView: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     padding: 16,
@@ -46,5 +70,20 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontFamily: 'Poppins-Regular',
     color: '#000',
+  },
+  viewActiveWallpaperButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: '#fff',
+    borderRadius: 100,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#e5e5e5',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    elevation: 3,
+    zIndex: 1000,
   },
 });
