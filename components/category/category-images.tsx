@@ -1,7 +1,8 @@
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { images } from '@/lib/data';
+import { addFavorite, isFavorite, removeFavorite } from '@/lib/favorites';
 import { BlurView } from 'expo-blur';
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 type CategoryImagesProps = {
@@ -11,14 +12,50 @@ type CategoryImagesProps = {
 
 const CategoryImages = ({ categoryId, onImagePress }: CategoryImagesProps) => {
     const category = images.find(img => img.id === categoryId);
-    const wallpapers = category?.wallpapers || [];
+    const wallpapers = useMemo(() => category?.wallpapers || [], [category]);
     const [favorites, setFavorites] = useState<Record<number, boolean>>({});
 
-    const toggleFavorite = (wallpaperId: number) => {
-        setFavorites(prev => ({
-            ...prev,
-            [wallpaperId]: !prev[wallpaperId]
-        }));
+    useEffect(() => {
+        // Load favorites from AsyncStorage
+        const loadFavorites = async () => {
+            const favoritesMap: Record<number, boolean> = {};
+            for (const wallpaper of wallpapers) {
+                const favorited = await isFavorite(wallpaper.id, categoryId);
+                favoritesMap[wallpaper.id] = favorited;
+            }
+            setFavorites(favoritesMap);
+        };
+        loadFavorites();
+    }, [categoryId, wallpapers]);
+
+    const toggleFavorite = async (wallpaperId: number) => {
+        const wallpaper = wallpapers.find(w => w.id === wallpaperId);
+        if (!wallpaper) return;
+
+        const currentlyFavorited = favorites[wallpaperId] || false;
+        
+        if (currentlyFavorited) {
+            // Remove from favorites
+            await removeFavorite(wallpaperId, categoryId);
+            setFavorites(prev => ({
+                ...prev,
+                [wallpaperId]: false
+            }));
+        } else {
+            // Add to favorites
+            await addFavorite({
+                id: wallpaper.id,
+                categoryId: categoryId,
+                image: wallpaper.image,
+                name: wallpaper.name,
+                description: wallpaper.description,
+                tags: wallpaper.tags || [],
+            });
+            setFavorites(prev => ({
+                ...prev,
+                [wallpaperId]: true
+            }));
+        }
     };
 
     return (
