@@ -1,10 +1,10 @@
 import ListView from '@/components/browse/list-view'
+import { ViewToggle } from '@/components/browse/view-toggle'
 import CategoriesImage from '@/components/home/categories'
 import { HeroSection } from '@/components/home/hero-section'
-import { Image } from 'expo-image'
 import { router } from 'expo-router'
 import React, { useState } from 'react'
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 
 type ViewMode = 'grid' | 'rows' | null;
 
@@ -19,28 +19,7 @@ const Browse = () => {
               title="Browse Categories"
               description="Explore our curated collections of stunning wallpapers"
             />
-            <View style={styles.browseView}>
-              <TouchableOpacity onPress={() => setListView('grid')}>
-                <Image
-                  source={listView === 'grid'
-                    ? require('@/assets/imgs/square-active.svg')
-                    : require('@/assets/imgs/square-inactive.svg')
-                  }
-                  style={styles.browseImage}
-                  contentFit="cover"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => setListView('rows')}>
-                <Image
-                  source={listView === 'rows'
-                    ? require('@/assets/imgs/rows-active.svg')
-                    : require('@/assets/imgs/rows-inactive.svg')
-                  }
-                  style={styles.browseImage}
-                  contentFit="cover"
-                />
-              </TouchableOpacity>
-            </View>
+            <ViewToggle currentView={listView} onViewChange={setListView} />
           </View>
           <View style={styles.categoriesContainer}>
             {listView === 'grid' 
@@ -103,14 +82,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     elevation: 3,
     zIndex: 1000,
-  },
-  browseView: {
-    flexDirection: 'row',
-    gap: 16,
-  },
-  browseImage: {
-    width: 40,
-    height: 40,
   },
   heroSectionContainer: {
     marginTop: 32,

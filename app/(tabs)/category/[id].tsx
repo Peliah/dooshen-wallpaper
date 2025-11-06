@@ -1,11 +1,17 @@
+import { ViewToggle } from '@/components/browse/view-toggle';
+import { IconSymbol } from '@/components/ui/icon-symbol';
 import { images } from '@/lib/data';
-import { useLocalSearchParams } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { router, useLocalSearchParams } from 'expo-router';
+import { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+type ViewMode = 'grid' | 'rows' | null;
 
 export default function CategoryScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const categoryId = parseInt(id || '1', 10);
   const category = images.find(img => img.id === categoryId);
+  const [listView, setListView] = useState<ViewMode>('grid');
 
   if (!category) {
     return (
@@ -17,9 +23,18 @@ export default function CategoryScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{category.name}</Text>
-      <Text style={styles.description}>{category.description}</Text>
-      <Text style={styles.count}>{category.numberOfWallpapers} Wallpapers</Text>
+      {/* Leftt Side */}
+      <View>
+        <TouchableOpacity onPress={() => router.back()}><IconSymbol name="chevron.left" size={24} color="#000" /> Back to Categories</TouchableOpacity>
+        <View>
+          <Text>{category.name}</Text>
+          <ViewToggle currentView={listView} onViewChange={setListView} />
+
+        </View>
+      </View>
+
+      {/* Right Side */}
+      <View></View>
     </View>
   );
 }
