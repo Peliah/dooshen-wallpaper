@@ -29,6 +29,10 @@ const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
     position: 'relative',
+    paddingHorizontal: 47,
+    maxWidth: 1440,
+    alignSelf: 'center',
+    width: '100%',
   },
   scrollView: {
     flex: 1,
@@ -36,7 +40,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#F8F8F8',
   },
   categoriesContainer: {
     marginTop: 32,

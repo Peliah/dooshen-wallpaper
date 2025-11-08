@@ -41,7 +41,3 @@ app-example
 # generated native folders
 /ios
 /android
-
-# Tauri
-src-tauri/target/
-src-tauri/Cargo.lock

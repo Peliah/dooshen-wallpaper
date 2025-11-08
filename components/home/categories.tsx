@@ -22,13 +22,13 @@ const CategoriesImage = ({ onImagePress }: CategoriesImageProps) => {
                     onPress={() => onImagePress?.(image.id)}
                     style={[
                         styles.imageContainer,
-                        {
-                            width: itemWidth,
-                            marginRight: (index + 1) % 3 !== 0 ? gap : 0,
-                        }
+                        // {
+                        //     width: itemWidth,
+                        //     marginRight: (index + 1) % 3 !== 0 ? gap : 0,
+                        // }
                     ]}
                 >
-                    <Image source={image.image} style={[styles.image, { width: itemWidth, height: itemWidth * 0.67 }]} />
+                    <Image source={image.image} style={[styles.image,]} />
                     <View style={styles.imageInfo}>
                         <Text style={styles.name}>{image.name}</Text>
                         <Text style={styles.description}>{image.description}</Text>
@@ -48,14 +48,17 @@ const styles = StyleSheet.create({
     gridContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        marginTop: 16,
+        // justifyContent: 'space-between',
+        gap: 20,
     },
     imageContainer: {
-        marginBottom: 20,
+        // marginBottom: 20,
         position: 'relative',
     },
     image: {
         borderRadius: 20,
+        width:424,
+            height: 290.22,
     },
     imageInfo: {
         position: 'absolute',
@@ -65,7 +68,6 @@ const styles = StyleSheet.create({
         padding: 16,
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
-        // backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     name: {
         fontSize: 20,

@@ -62,7 +62,10 @@ export default function CategoryScreen() {
 const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
-    backgroundColor: '#F8F8F8',
+    paddingHorizontal: 47,
+    maxWidth: 1440,
+    alignSelf: 'center',
+    width: '100%',
   },
   scrollContent: {
     padding: 16,
