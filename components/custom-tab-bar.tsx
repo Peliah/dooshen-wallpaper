@@ -1,7 +1,10 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { Image } from 'expo-image';
 import { router, usePathname, type RelativePathString } from 'expo-router';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
+import { MenuSheet } from './navigation/menu-sheet';
+import { IconSymbol } from './ui/icon-symbol';
 const pagesLinks =
   [
     {
@@ -29,35 +32,68 @@ const pagesLinks =
   
   export function CustomTabBar(props: BottomTabBarProps) {
     const pathname = usePathname();
+    const { width: screenWidth } = useWindowDimensions();
+    const isSmallScreen = screenWidth < 1024;
     const isActive = (link: RelativePathString) => pathname === link;
-  return (
-    <View style={styles.container}>
-      {/* Left side: Logo and Text */}
-      <View style={styles.maxWidthContainer}>
-      <View style={styles.leftSection}>
-        <Image
-          source={require('@/assets/imgs/logo.svg')}
-          style={styles.logo}
-          contentFit="contain"
-        />
-        <Text style={styles.brandText}>Wallpaper Studio</Text>
-      </View>
+    const [isMenuVisible, setIsMenuVisible] = useState(false);
 
-      {/* Right side: Tabs */}
-      <View style={styles.rightSection}>
-        {pagesLinks.map((page) => (
-          <TouchableOpacity key={page.name} style={[styles.tabBarItem, isActive(page.link as RelativePathString) && styles.tabBarItemActive]} onPress={() => router.push(page.link as RelativePathString)}>
+    const openMenu = () => {
+      setIsMenuVisible(true);
+    };
+
+    const closeMenu = () => {
+      setIsMenuVisible(false);
+    };
+
+  return (
+    <>
+      <View style={styles.container}>
+        {/* Left side: Logo and Text */}
+        <View style={styles.maxWidthContainer}>
+          <View style={styles.leftSection}>
             <Image
-              source={page.icon}
-              style={styles.tabBarItemIcon}
+              source={require('@/assets/imgs/logo.svg')}
+              style={styles.logo}
               contentFit="contain"
             />
-            <Text style={styles.tabBarItemText}>{page.name}</Text>
-          </TouchableOpacity>
-        ))}
+            <Text style={styles.brandText}>Wallpaper Studio</Text>
+          </View>
+
+          {/* Right side: Tabs or Hamburger */}
+          {isSmallScreen ? (
+            <TouchableOpacity onPress={openMenu} style={styles.hamburgerButton}>
+              <IconSymbol name="line.3.horizontal" size={24} color="#000" />
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.rightSection}>
+              {pagesLinks.map((page) => (
+                <TouchableOpacity 
+                  key={page.name} 
+                  style={[styles.tabBarItem, isActive(page.link as RelativePathString) && styles.tabBarItemActive]} 
+                  onPress={() => router.push(page.link as RelativePathString)}
+                >
+                  <Image
+                    source={page.icon}
+                    style={styles.tabBarItemIcon}
+                    contentFit="contain"
+                  />
+                  <Text style={styles.tabBarItemText}>{page.name}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+        </View>
       </View>
-      </View>
-    </View>
+
+      {/* Menu Sheet for Small Screens */}
+      {isSmallScreen && (
+        <MenuSheet
+          visible={isMenuVisible}
+          onClose={closeMenu}
+          pagesLinks={pagesLinks}
+        />
+      )}
+    </>
   );
 }
 
@@ -142,6 +178,10 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontFamily: 'Poppins-Regular',
     color: '#000',
+  },
+  hamburgerButton: {
+    padding: 8,
+    borderRadius: 8,
   },
 });
 

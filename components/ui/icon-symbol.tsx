@@ -27,6 +27,7 @@ const MAPPING = {
   'link': 'link',
   'xmark': 'close',
   'arrow.left': 'arrow-back',
+  'line.3.horizontal': 'menu',
 } as IconMapping;
 
 /**
