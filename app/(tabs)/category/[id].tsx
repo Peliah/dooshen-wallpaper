@@ -42,7 +42,7 @@ export default function CategoryScreen() {
       <View style={styles.container}>
         {/* Left Side */}
         <View style={styles.leftSide}>
-          <TouchableOpacity onPress={() => router.back()} style={styles.backButton}><IconSymbol name="chevron.left" size={24} color="#000" /> Back to Categories</TouchableOpacity>
+          <TouchableOpacity onPress={() => router.back()} style={styles.backButton}><IconSymbol name="arrow.left" size={24} color="#000" /> Back to Categories</TouchableOpacity>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>{category.name}</Text>
             <ViewToggle currentView={listView} onViewChange={setListView} />
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   leftSide: {
     // flex: 1,
     width: '42.5%',
-    gap: 50,
+    // gap: 50,
   },
   rightSide: {
     // flex: 1,
@@ -91,12 +91,13 @@ const styles = StyleSheet.create({
     gap: 8,
     fontFamily: 'Poppins-Regular',
     color: '#808080',
+    marginBottom: 50,
 
   },
   title: {
     fontSize: 32,
     fontWeight: '100',
-    fontFamily: 'ClashDisplay-Medium',
+    fontFamily: 'ClashDisplay-Regular',
     color: '#000',
     marginBottom: 8,
   },

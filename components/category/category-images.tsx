@@ -2,8 +2,9 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { images } from '@/lib/data';
 import { addFavorite, isFavorite, removeFavorite } from '@/lib/favorites';
 import { BlurView } from 'expo-blur';
+import { Image } from 'expo-image';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 
 type CategoryImagesProps = {
     categoryId: number;
@@ -14,6 +15,43 @@ const CategoryImages = ({ categoryId, onImagePress }: CategoryImagesProps) => {
     const category = images.find(img => img.id === categoryId);
     const wallpapers = useMemo(() => category?.wallpapers || [], [category]);
     const [favorites, setFavorites] = useState<Record<number, boolean>>({});
+    const { width: screenWidth } = useWindowDimensions();
+
+    // Calculate responsive dimensions
+    // The leftSide container is 42.5% of the available width
+    const maxContainerWidth = 1440;
+    const containerPadding = 47 * 2; // padding from scrollView
+    const innerPadding = 16 * 2; // padding from scrollContent
+    const leftSideWidth = 0.425; // 42.5% of container
+    const gap = 16;
+
+    // Determine number of columns based on screen width
+    let numColumns = 3;
+    if (screenWidth < 768) {
+        numColumns = 2; // Mobile: 2 columns
+    } else if (screenWidth < 1024) {
+        numColumns = 2; // Tablet: 2 columns
+    } else {
+        numColumns = 3; // Desktop: 3 columns
+    }
+
+    // Calculate available width for leftSide
+    const availableContainerWidth = Math.min(
+        screenWidth - containerPadding - innerPadding,
+        maxContainerWidth - containerPadding - innerPadding
+    );
+    const leftSideAvailableWidth = availableContainerWidth * leftSideWidth;
+    const itemWidth = (leftSideAvailableWidth - (gap * (numColumns - 1))) / numColumns;
+    const aspectRatio = 200 / 300; // Original aspect ratio (width/height)
+    const itemHeight = itemWidth / aspectRatio;
+
+    // Responsive font sizes and spacing
+    const nameFontSize = screenWidth < 768 ? 16 : screenWidth < 1024 ? 18 : 20;
+    const badgeFontSize = screenWidth < 768 ? 12 : 14;
+    const padding = screenWidth < 768 ? 12 : 16;
+    const iconSize = screenWidth < 768 ? 20 : 24;
+    const buttonPadding = screenWidth < 768 ? 6 : 8;
+    const buttonTop = screenWidth < 768 ? 8 : 12;
 
     useEffect(() => {
         // Load favorites from AsyncStorage
@@ -69,32 +107,38 @@ const CategoryImages = ({ categoryId, onImagePress }: CategoryImagesProps) => {
                             onPress={() => onImagePress?.(wallpaper.id)}
                             style={[
                                 styles.imageContainer,
-                                // {
-                                //     width: itemWidth,
-                                //     marginRight: (index + 1) % 3 !== 0 ? gap : 0,
-                                //     marginBottom: gap,
-                                // }
+                                {
+                                    width: itemWidth,
+                                    height: itemHeight,
+                                }
                             ]}
                         >
-                            <Image source={wallpaper.image} style={[styles.image]} />
-                            <View style={styles.imageInfo}>
-                                <Text style={styles.name}>{wallpaper.name}</Text>
+                            <Image 
+                                source={wallpaper.image} 
+                                style={[styles.image, { width: itemWidth, height: itemHeight }]} 
+                                contentFit="cover"
+                            />
+                            <View style={[styles.imageInfo, { padding }]}>
+                                <Text style={[styles.name, { fontSize: nameFontSize }]}>{wallpaper.name}</Text>
                                 <BlurView intensity={20} style={styles.numberOfWallpapersContainer}>
-                                    <Text style={styles.description}>{wallpaper.name}</Text>
+                                    <Text style={[styles.description, { fontSize: badgeFontSize }]}>{wallpaper.name}</Text>
                                 </BlurView>
                             </View>
                             <TouchableOpacity
-                                style={styles.imageActionButton}
-                                onPress={() => toggleFavorite(wallpaper.id)}
+                                style={[styles.imageActionButton, { top: buttonTop, right: buttonTop }]}
+                                onPress={(e) => {
+                                    e.stopPropagation();
+                                    toggleFavorite(wallpaper.id);
+                                }}
                                 activeOpacity={1}
                             >
                                 {!isFavorited ? (
-                                    <BlurView intensity={20} style={styles.imageActionButtonBlur}>
-                                        <IconSymbol name="heart" size={24} color="#fff" />
+                                    <BlurView intensity={20} style={[styles.imageActionButtonBlur, { padding: buttonPadding }]}>
+                                        <IconSymbol name="heart" size={iconSize} color="#fff" />
                                     </BlurView>
                                 ) : (
-                                    <View style={styles.imageActionButtonBlur}>
-                                        <IconSymbol name="heart.fill" size={24} color="#FFA821" />
+                                    <View style={[styles.imageActionButtonBlur, { padding: buttonPadding }]}>
+                                        <IconSymbol name="heart.fill" size={iconSize} color="#FFA821" />
                                     </View>
                                 )}
                             </TouchableOpacity>
@@ -118,29 +162,28 @@ const styles = StyleSheet.create({
     imageContainer: {
         borderRadius: 20,
         position: 'relative',
+        overflow: 'hidden',
     },
     image: {
         borderRadius: 20,
-        width: 200,
-        height: 300,
+        width: '100%',
+        height: '100%',
     },
     imageInfo: {
         position: 'absolute',
         bottom: 0,
         left: 0,
         right: 0,
-        padding: 16,
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
     },
     name: {
-        fontSize: 20,
         fontWeight: 'bold',
         color: '#FFFFFF',
         fontFamily: 'Poppins-Regular',
+        marginBottom: 4,
     },
     description: {
-        fontSize: 16,
         fontWeight: '400',
         color: '#FFFFFF',
         fontFamily: 'Poppins-Light',
@@ -156,11 +199,9 @@ const styles = StyleSheet.create({
     },
     imageActionButton: {
         position: 'absolute',
-        top: 12,
-        right: 12,
+        zIndex: 10,
     },
     imageActionButtonBlur: {
-        padding: 8,
         borderRadius: 20,
         borderWidth: 1,
         borderColor: 'rgba(255, 255, 255, 0.3)',
