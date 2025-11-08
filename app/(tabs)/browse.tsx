@@ -43,6 +43,8 @@ const styles = StyleSheet.create({
     maxWidth: 1440,
     alignSelf: 'center',
     width: '100%',
+    alignItems: 'flex-start',
+    // backgroundColor: 'red',
   },
   scrollView: {
     flex: 1,
@@ -50,6 +52,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    // backgroundColor: 'red',
   },
   categoriesContainer: {
     marginTop: 32,
@@ -87,7 +90,6 @@ const styles = StyleSheet.create({
     zIndex: 1000,
   },
   heroSectionContainer: {
-    marginTop: 32,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',

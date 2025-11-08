@@ -4,6 +4,7 @@ import ActiveWallpaper from '@/components/home/active-wallpaper';
 import CategoriesImage from '@/components/home/categories';
 import { HeroSection } from '@/components/home/hero-section';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import { router } from 'expo-router';
 import { useState } from 'react';
 
 export default function HomeScreen() {
@@ -25,9 +26,9 @@ export default function HomeScreen() {
           <View>
             <View style={styles.categoriesHeader}>
               <Text style={styles.categoriesTitle}>Categories</Text>
-              <TouchableOpacity> <Text style={styles.categoriesButton}> See All</Text></TouchableOpacity>
+              <TouchableOpacity> <Text style={styles.categoriesButton} onPress={() => router.push('/browse')}> See All</Text></TouchableOpacity>
             </View>
-            <CategoriesImage />
+            <CategoriesImage onImagePress={(id) => router.push({ pathname: '/(tabs)/category/[id]', params: { id: id.toString() } })} />
           </View>
         </View>
       </ScrollView>
@@ -61,6 +62,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 12,
   },
   categoriesButton: {
     fontSize: 24,

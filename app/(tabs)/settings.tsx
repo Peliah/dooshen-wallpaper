@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
   },
   categoriesContainer: {
     paddingHorizontal: 150,
-    marginTop: 32,
     backgroundColor: '#fff',
     flexDirection: 'row',
     gap: 16,
@@ -148,7 +147,6 @@ const styles = StyleSheet.create({
     zIndex: 1000,
   },
   heroSectionContainer: {
-    marginTop: 32,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',

@@ -77,7 +77,6 @@ const styles = StyleSheet.create({
     zIndex: 1000,
   },
   heroSectionContainer: {
-    marginTop: 32,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',

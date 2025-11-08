@@ -50,6 +50,7 @@ export function HeroSection({ title, description }: { title: string, description
 const styles = StyleSheet.create({
   container: {
     marginVertical: 53,
+    // backgroundColor: 'blue',
   },
   titleContainer: {
     alignSelf: 'flex-start',
