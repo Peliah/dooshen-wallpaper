@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 12,
+    marginTop: 50,
   },
   categoriesButton: {
     fontSize: 24,

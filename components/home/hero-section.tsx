@@ -49,7 +49,7 @@ export function HeroSection({ title, description }: { title: string, description
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 53,
+    marginTop: 53,
     // backgroundColor: 'blue',
   },
   titleContainer: {

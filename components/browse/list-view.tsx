@@ -37,17 +37,17 @@ export default ListView
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingVertical: 20,
-        gap: 20,
-        borderBottomWidth: 1,
-        borderBottomColor: 'rgba(0, 0, 0, 0.3)',
         // backgroundColor: '#fff',
     },
     imageContainer: {
         marginBottom: 20,
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 16,
+        paddingVertical: 20,
+        gap: 20,
+        // gap: 16,
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(0, 0, 0, 0.3)',
     },
     image: {
         borderRadius: 20,
