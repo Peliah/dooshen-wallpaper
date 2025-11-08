@@ -189,7 +189,12 @@ const Preview = ({ wallpaper, categoryId }: PreviewSectionProps) => {
             </View>
 
             {/* Right Side Sheet */}
-            <SetWallpaperSheet visible={isSheetVisible} onClose={closeSheet} />
+            <SetWallpaperSheet 
+                visible={isSheetVisible} 
+                onClose={closeSheet}
+                wallpaper={wallpaper}
+                categoryId={categoryId}
+            />
         </LinearGradient>
     )
 }

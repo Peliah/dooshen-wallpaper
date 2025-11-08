@@ -1,20 +1,31 @@
-import React, { useRef, useState } from 'react';
+import { isActiveWallpaper, removeActiveWallpaper, setActiveWallpaper } from '@/lib/active-wallpaper';
+import { images } from '@/lib/data';
+import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Modal, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { IconSymbol } from '../ui/icon-symbol';
 
 type SetWallpaperSheetProps = {
     visible: boolean;
     onClose: () => void;
+    wallpaper: {
+        id: number;
+        image: any;
+        name: string;
+        description: string;
+        tags: string[];
+    } | null;
+    categoryId: number;
 };
 
 type DisplayMode = 'fit' | 'fill' | 'stretch' | 'tile';
 
-export function SetWallpaperSheet({ visible, onClose }: SetWallpaperSheetProps) {
+export function SetWallpaperSheet({ visible, onClose, wallpaper, categoryId }: SetWallpaperSheetProps) {
     const slideAnim = useRef(new Animated.Value(400)).current;
     const [selectedDisplayMode, setSelectedDisplayMode] = useState<DisplayMode>('fit');
     const [customDisplayMode, setCustomDisplayMode] = useState(false);
     const [lockWallpaper, setLockWallpaper] = useState(false);
     const [syncDevices, setSyncDevices] = useState(false);
+    const [isActivated, setIsActivated] = useState(false);
 
     React.useEffect(() => {
         if (visible) {
@@ -32,6 +43,44 @@ export function SetWallpaperSheet({ visible, onClose }: SetWallpaperSheetProps) 
             }).start();
         }
     }, [visible, slideAnim]);
+
+    // Check if wallpaper is active when sheet opens or wallpaper changes
+    useEffect(() => {
+        const checkActiveStatus = async () => {
+            if (wallpaper) {
+                const active = await isActiveWallpaper(wallpaper.id, categoryId);
+                setIsActivated(active);
+            } else {
+                setIsActivated(false);
+            }
+        };
+        if (visible && wallpaper) {
+            checkActiveStatus();
+        }
+    }, [visible, wallpaper, categoryId]);
+
+    const handleToggleActivate = async () => {
+        if (!wallpaper) return;
+
+        if (isActivated) {
+            // Deactivate
+            await removeActiveWallpaper();
+            setIsActivated(false);
+        } else {
+            // Activate
+            const category = images.find(img => img.id === categoryId);
+            await setActiveWallpaper({
+                id: wallpaper.id,
+                categoryId: categoryId,
+                image: wallpaper.image,
+                name: wallpaper.name,
+                description: wallpaper.description,
+                tags: wallpaper.tags || [],
+                categoryName: category?.name,
+            });
+            setIsActivated(true);
+        }
+    };
 
     const handleClose = () => {
         Animated.timing(slideAnim, {
@@ -71,13 +120,26 @@ export function SetWallpaperSheet({ visible, onClose }: SetWallpaperSheetProps) 
                                 <Text style={styles.sectionTitle}>Wallpaper Setup</Text>
                                 <Text style={styles.sectionDescription}>Configure your wallpaper settings and enable auto-rotation</Text>
 
-                                <View style={styles.sheetContentRowActivate}>
+                                <TouchableOpacity 
+                                    style={styles.sheetContentRowActivate}
+                                    onPress={handleToggleActivate}
+                                >
                                     <View style={styles.rowTextContainerActivate}>
                                         <Text style={styles.rowTitle}>Activate Wallpaper</Text>
                                         <Text style={styles.rowDescription}>Set the selected wallpaper as your desktop background</Text>
                                     </View>
-                                    <View style={styles.activateWallpaperStatus}><IconSymbol name="checkmark.circle.fill" size={20} color="#1BA400" /> <Text style={styles.rowTitleActivate}>Activated</Text></View>
-                                </View>
+                                    {isActivated ? (
+                                        <View style={styles.activateWallpaperStatus}>
+                                            <IconSymbol name="checkmark.circle.fill" size={20} color="#1BA400" />
+                                            <Text style={styles.rowTitleActivate}>Activated</Text>
+                                        </View>
+                                    ) : (
+                                        <View style={styles.activateWallpaperStatusInactive}>
+                                            <IconSymbol name="circle" size={20} color="#808080" />
+                                            <Text style={styles.rowTitleActivateInactive}>Inactive</Text>
+                                        </View>
+                                    )}
+                                </TouchableOpacity>
 
                                 <Text style={styles.sectionTitle}>Display mode</Text>
                                 <TouchableOpacity
@@ -184,7 +246,7 @@ export function SetWallpaperSheet({ visible, onClose }: SetWallpaperSheetProps) 
                                     <Text style={styles.footerButtonText}>Cancel</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={[styles.sheetFooterButton, styles.saveButton]}>
-                                    <Text style={[styles.footerButtonText, styles.saveButtonText]}>Save Settings</Text>
+                                    <Text style={[styles.footerButtonText, styles.saveButtonText]} onPress={handleClose}>Save Settings</Text>
                                 </TouchableOpacity>
                             </View>
                         </Animated.View>
@@ -338,6 +400,21 @@ const styles = StyleSheet.create({
     rowTextContainerActivate: {
         width: '50%',
         gap: 4,
+    },
+    activateWallpaperStatusInactive: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+        backgroundColor: '#f5f5f5',
+        color: '#808080',
+        padding: 8,
+        borderRadius: 16,
+    },
+    rowTitleActivateInactive: {
+        fontSize: 14,
+        fontWeight: '400',
+        fontFamily: 'Poppins-Regular',
+        color: '#808080',
     },
 });
 

@@ -1,13 +1,39 @@
-import { Image } from 'expo-image'
-import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { getActiveWallpaper, type ActiveWallpaper as ActiveWallpaperType } from '@/lib/active-wallpaper';
+import { Image } from 'expo-image';
+import { useFocusEffect } from 'expo-router';
+import React, { useCallback, useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const ActiveWallpaper = () => {
+    const [activeWallpaper, setActiveWallpaper] = useState<ActiveWallpaperType | null>(null);
+
+    const loadActiveWallpaper = useCallback(async () => {
+        const wallpaper = await getActiveWallpaper();
+        setActiveWallpaper(wallpaper);
+    }, []);
+
+    useFocusEffect(
+        useCallback(() => {
+            loadActiveWallpaper();
+        }, [loadActiveWallpaper])
+    );
+
+    if (!activeWallpaper) {
+        return (
+            <View style={styles.container}>
+                <View style={styles.emptyContainer}>
+                    <Text style={styles.emptyTitle}>No Active Wallpaper</Text>
+                    <Text style={styles.emptyDescription}>Select a wallpaper and activate it to see it here</Text>
+                </View>
+            </View>
+        );
+    }
+
     return (
         <View style={styles.container}>
-            {/* flower image */}
+            {/* wallpaper image */}
             <View style={styles.imageContainer}>
-                <Image source={require('@/assets/imgs/flowers.jpg')} style={styles.image} contentFit="cover" />
+                <Image source={activeWallpaper.image} style={styles.image} contentFit="cover" />
             </View>
             {/* wallpaper info */}
             <View style={styles.wallpaperInfo}>
@@ -18,9 +44,13 @@ const ActiveWallpaper = () => {
                     </View>
                     <View>
                         <View style={styles.wallpaperInfoHeaderCategoryContainer}>
-                        <Text style={styles.wallpaperInfoHeaderCategory}>Category</Text> <Text style={styles.wallpaperInfoHeaderCategoryValue}>- Nature</Text>
+                            <Text style={styles.wallpaperInfoHeaderCategory}>Category</Text>
+                            <Text style={styles.wallpaperInfoHeaderCategoryValue}>- {activeWallpaper.categoryName || 'Unknown'}</Text>
                         </View>
-                        <View style={styles.wallpaperInfoHeaderCategoryContainer}> <Text style={styles.wallpaperInfoHeaderCategory}>Selection</Text> <Text style={styles.wallpaperInfoHeaderCategoryValue}>- Wallpapers 5</Text> </View>
+                        <View style={styles.wallpaperInfoHeaderCategoryContainer}>
+                            <Text style={styles.wallpaperInfoHeaderCategory}>Selection</Text>
+                            <Text style={styles.wallpaperInfoHeaderCategoryValue}>- {activeWallpaper.name}</Text>
+                        </View>
                     </View>
                 </View>
                 {/* wallpaper actions */}
@@ -34,8 +64,8 @@ const ActiveWallpaper = () => {
                 </View>
             </View>
         </View>
-    )
-}
+    );
+};
 
 export default ActiveWallpaper
 
@@ -114,5 +144,25 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#e5e5e5',
         backgroundColor: 'rgba(124, 124, 124, 0.1)',
+    },
+    emptyContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 40,
+    },
+    emptyTitle: {
+        fontSize: 24,
+        fontWeight: '600',
+        fontFamily: 'ClashDisplay-Medium',
+        color: '#000',
+        marginBottom: 8,
+    },
+    emptyDescription: {
+        fontSize: 16,
+        fontWeight: '400',
+        fontFamily: 'Poppins-Regular',
+        color: '#808080',
+        textAlign: 'center',
     },
 })

@@ -8,13 +8,13 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 
 export default function HomeScreen() {
-  const [activeWallpaper, setActiveWallpaper] = useState<any>(null);
+  const [showActiveWallpaper, setShowActiveWallpaper] = useState(false);
   return (
     <View style={styles.screenContainer}>
       <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
         <View style={styles.container}>
           {
-            activeWallpaper ? (
+            showActiveWallpaper ? (
               <ActiveWallpaper />
             ) : (
               <HeroSection 
@@ -33,7 +33,7 @@ export default function HomeScreen() {
         </View>
       </ScrollView>
       <TouchableOpacity 
-        onPress={() => setActiveWallpaper(activeWallpaper ? null : {})} 
+        onPress={() => setShowActiveWallpaper(!showActiveWallpaper)} 
         style={styles.viewActiveWallpaperButton}
       >
         <IconSymbol name="eye" size={24} color="black" />
