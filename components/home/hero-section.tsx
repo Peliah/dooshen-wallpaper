@@ -34,7 +34,7 @@ export function HeroSection({ title, description }: { title: string, description
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.titleContainer}>
         <GradientText />
       </View>
@@ -48,6 +48,9 @@ export function HeroSection({ title, description }: { title: string, description
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginVertical: 53,
+  },
   titleContainer: {
     alignSelf: 'flex-start',
   },

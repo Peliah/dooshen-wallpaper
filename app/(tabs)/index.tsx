@@ -22,7 +22,7 @@ export default function HomeScreen() {
               />
             )
           }
-          <View style={styles.categoriesContainer}>
+          <View>
             <View style={styles.categoriesHeader}>
               <Text style={styles.categoriesTitle}>Categories</Text>
               <TouchableOpacity> <Text style={styles.categoriesButton}> See All</Text></TouchableOpacity>
@@ -52,14 +52,10 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    gap: 53
   },
   container: {
     flex: 1,
     padding: 16,
-  },
-  categoriesContainer: {
-    marginTop: 32,
   },
   categoriesHeader: {
     flexDirection: 'row',

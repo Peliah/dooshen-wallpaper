@@ -40,7 +40,7 @@ const pagesLinks =
           style={styles.logo}
           contentFit="contain"
         />
-        <Text style={styles.brandText}>Wallpaper studio</Text>
+        <Text style={styles.brandText}>Wallpaper Studio</Text>
       </View>
 
       {/* Right side: Tabs */}
@@ -72,6 +72,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     minHeight: 60,
     height: 98,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e5e5e5',
   },
   maxWidthContainer: {
     width: '100%',
