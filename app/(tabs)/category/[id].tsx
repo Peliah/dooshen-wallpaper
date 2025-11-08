@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: 16,
+    marginTop: 43,
   },
   container: {
     flexDirection: 'row',
@@ -78,6 +79,7 @@ const styles = StyleSheet.create({
   leftSide: {
     // flex: 1,
     width: '42.5%',
+    gap: 50,
   },
   rightSide: {
     // flex: 1,

@@ -27,7 +27,13 @@ export default function RootLayout() {
     'Poppins-ExtraBoldItalic': require('../assets/fonts/poppins/Poppins-ExtraBoldItalic.ttf'),
     'Poppins-Black': require('../assets/fonts/poppins/Poppins-Black.ttf'),
     'Poppins-BlackItalic': require('../assets/fonts/poppins/Poppins-BlackItalic.ttf'),
-    'ClashDisplay-Medium': require('../assets/fonts/ClashDisplay-Medium.otf'),
+    'ClashDisplay-Medium': require('../assets/fonts/clash-display/ClashDisplay-Medium.otf'),
+    'ClashDisplay-Regular': require('../assets/fonts/clash-display/ClashDisplay-Regular.otf'),
+    'ClashDisplay-Light': require('../assets/fonts/clash-display/ClashDisplay-Light.otf'),
+    'ClashDisplay-Bold': require('../assets/fonts/clash-display/ClashDisplay-Bold.otf'),
+    'ClashDisplay-SemiBold': require('../assets/fonts/clash-display/ClashDisplay-Semibold.otf'),
+    'ClashDisplay-ExtraLight': require('../assets/fonts/clash-display/ClashDisplay-Extralight.otf'),
+
   });
 
   useEffect(() => {
