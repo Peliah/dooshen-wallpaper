@@ -52,7 +52,7 @@ export default function CategoryScreen() {
 
         {/* Right Side */}
         <View style={styles.rightSide}>
-          <PreviewSection wallpaper={selectedWallpaper} />
+          <PreviewSection wallpaper={selectedWallpaper} categoryId={categoryId} />
         </View>
       </View>
     </ScrollView>
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
 
   },
   title: {
-    fontSize: 32,
+    fontSize: 48,
     fontWeight: '100',
     fontFamily: 'ClashDisplay-Regular',
     color: '#000',
